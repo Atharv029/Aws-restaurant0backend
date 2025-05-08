@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 AWS.config.update({
-  region: 'ap-south-1', // change to your region
+  region: 'us-east-1', // change to your region
 });
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
