@@ -9,13 +9,10 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-AWS.config.update({
-  region: 'us-east-1', // change to your region
-});
-
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 const tableName = 'Orders';
 
+// POST Order
 app.post('/api/order', async (req, res) => {
   const { name, phone, dish } = req.body;
   const id = Date.now().toString();
@@ -27,12 +24,15 @@ app.post('/api/order', async (req, res) => {
 
   try {
     await dynamodb.put(params).promise();
-    res.status(200).json({ message: 'Order placed successfully' });
+    res.status(200).json({ message: 'Order placed!' });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Could not place order' });
+    res.status(500).json({ error: 'Failed to place order.' });
   }
 });
+
+// Health Check
+app.get('/', (req, res) => res.send('Backend Running'));
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
